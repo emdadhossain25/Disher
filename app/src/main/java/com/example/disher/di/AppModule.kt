@@ -22,9 +22,11 @@ class AppModule {
 
         //        func(whatwillBeProvided):whenAskedForThis
         @Binds
+        @Singleton
         fun provideCategoryRepository(repo: CategoryRepository): ICategoryRepository
 
         @Binds
+        @Singleton
         fun provideCategoryUseCase(categoryUseCase: CategoriesUseCase): ICategoriesUseCase
 
 
