@@ -10,7 +10,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.disher.categories.CategoriesScreen
+import com.example.disher.dishes.DishesScreen
 import com.example.disher.ui.theme.DisherTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,5 +32,25 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DisherApp() {
-    CategoriesScreen()
+    // TODO
+    /**
+     * category composeable-cs
+     * dishes composable -Dishes Screen
+     */
+
+    val navController = rememberNavController()
+    NavHost(
+        navController = navController,
+        startDestination = "category"
+    ) {
+        composable("category") {
+            CategoriesScreen() {
+                navController.navigate("dishes")
+            }
+
+        }
+        composable("dishes") {
+            DishesScreen()
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.disher.categories
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,7 +24,8 @@ import com.example.disher.categories.viewmodel.CategoriesViewModel
 
 @Composable
 fun CategoriesScreen(
-    categoriesViewModel: CategoriesViewModel = hiltViewModel()
+    categoriesViewModel: CategoriesViewModel = hiltViewModel(),
+    onItemClick: () -> Unit
 ) {
     //compose screen recompose redraws screen
     // to survive that and also update new item
@@ -31,17 +33,23 @@ fun CategoriesScreen(
 
     LazyColumn {
         items(listOfCategories) { item ->
-            SingleItemCategory(item)
+            SingleItemCategory(item){
+                onItemClick()
+            }
         }
     }
 
 }
 
 @Composable
-fun SingleItemCategory(item: Category) {
+fun SingleItemCategory(
+    item: Category,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .padding(8.dp)
+            .clickable { onClick() }
             .fillMaxWidth(),
         elevation = 8.dp
     ) {
