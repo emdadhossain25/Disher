@@ -25,7 +25,7 @@ import com.example.disher.categories.viewmodel.CategoriesViewModel
 @Composable
 fun CategoriesScreen(
     categoriesViewModel: CategoriesViewModel = hiltViewModel(),
-    onItemClick: () -> Unit
+    onItemClick: (String) -> Unit
 ) {
     //compose screen recompose redraws screen
     // to survive that and also update new item
@@ -34,7 +34,7 @@ fun CategoriesScreen(
     LazyColumn {
         items(listOfCategories) { item ->
             SingleItemCategory(item){
-                onItemClick()
+                onItemClick(it)
             }
         }
     }
@@ -44,12 +44,12 @@ fun CategoriesScreen(
 @Composable
 fun SingleItemCategory(
     item: Category,
-    onClick: () -> Unit
+    onClick: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .clickable { onClick() }
+            .clickable { onClick(item.strCategory) }
             .fillMaxWidth(),
         elevation = 8.dp
     ) {

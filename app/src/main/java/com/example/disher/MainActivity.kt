@@ -8,11 +8,14 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.disher.categories.CategoriesScreen
 import com.example.disher.dishes.DishesScreen
 import com.example.disher.ui.theme.DisherTheme
@@ -44,13 +47,21 @@ fun DisherApp() {
         startDestination = "category"
     ) {
         composable("category") {
-            CategoriesScreen() {
-                navController.navigate("dishes")
+            CategoriesScreen() { category ->
+                navController.navigate("dishes/$category")
             }
 
         }
-        composable("dishes") {
-            DishesScreen()
+        composable(
+            "dishes/{category}",
+            arguments = listOf(navArgument("category") {
+                type = NavType.StringType
+            })
+        ) {
+            val categoryStr = remember {
+                it.arguments?.getString("category")
+            }
+            DishesScreen(categoryStr)
         }
     }
 }

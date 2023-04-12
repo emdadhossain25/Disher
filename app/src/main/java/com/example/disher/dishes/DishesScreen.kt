@@ -4,6 +4,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun DishesScreen() {
-    Text("Dishes")
+fun DishesScreen(category: String?) {
+    Text("Category of type $category")
 }
