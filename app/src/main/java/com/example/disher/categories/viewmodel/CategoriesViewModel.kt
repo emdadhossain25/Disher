@@ -14,8 +14,11 @@ class CategoriesViewModel @Inject constructor(
 ) : ViewModel() {
     init {
         viewModelScope.launch {
-            val result = useCase()
-            Log.d("CategoriesViewModel", result)
+            val categoriesResponse = useCase()
+            categoriesResponse.categories.forEach {
+                Log.d("CategoriesViewModel", it.strCategory)
+                Log.d("CategoriesViewModel", it.strCategoryDescription)
+            }
         }
     }
 }
