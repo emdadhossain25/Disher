@@ -5,13 +5,13 @@ import javax.inject.Inject
 
 
 interface ICategoriesUseCase {
-    operator fun invoke(): String
+    operator suspend fun invoke(): String
 }
 
 class CategoriesUseCase @Inject constructor(
     val repository: ICategoryRepository
 ) : ICategoriesUseCase {
-    override fun invoke(): String {
+    override suspend fun invoke(): String {
         return repository.getAllCategories()
     }
 

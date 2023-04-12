@@ -1,15 +1,16 @@
 package com.example.disher.categories.repository
 
+import com.example.disher.categories.service.ICategoriesService
 import javax.inject.Inject
 
 interface ICategoryRepository {
-    fun getAllCategories(): String
+    suspend fun getAllCategories(): String
 }
 
 class CategoryRepository @Inject constructor(
-
+    val categoriesService: ICategoriesService
 ) : ICategoryRepository {
-    override fun getAllCategories(): String {
-        return "PAGE 42"
+    override suspend fun getAllCategories(): String {
+        return categoriesService.getAllCategories()
     }
 }
