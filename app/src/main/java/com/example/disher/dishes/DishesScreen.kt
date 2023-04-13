@@ -17,7 +17,7 @@ fun DishesScreen(
     category: String?,
     viewModel: DishesViewModel = hiltViewModel()
 ) {
-    DisposableEffect(key1 = "dishes") {
+    DisposableEffect(key1 = Unit) {
         if (!category.isNullOrBlank()) {
             viewModel.getDishesForCategory(category)
         }
@@ -25,10 +25,10 @@ fun DishesScreen(
     }
     val viewState by remember { viewModel.viewState }
 
-    when (viewState) {
-        is ViewState.Error -> Text(text = (viewState as ViewState.Error).errorMessage)
+    when (val viewStateValue = viewState) {
+        is ViewState.Error -> Text(text = viewStateValue.errorMessage)
         ViewState.Loading -> Text(text = "Loading")
-        is ViewState.Success -> Text(text = "" + (viewState as ViewState.Success).data)
+        is ViewState.Success -> Text(text = "" + viewStateValue.data)
     }
 
 }

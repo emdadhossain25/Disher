@@ -33,15 +33,16 @@ fun CategoriesScreen(
 
     val viewState by remember { categoriesViewModel.viewState }
 
-    DisposableEffect(key1 = "category") {
+    DisposableEffect(key1 = Unit) {
         onDispose { }
     }
-    when (viewState) {
-        is ViewState.Error -> Text(text = (viewState as ViewState.Error).errorMessage)
+
+    when (val viewStateValue = viewState) {
+        is ViewState.Error -> Text(text = viewStateValue.errorMessage)
         ViewState.Loading -> Text(text = "Loading")
         is ViewState.Success -> {
             LazyColumn {
-                items((viewState as ViewState.Success).data) { item ->
+                items(viewStateValue.data) { item ->
                     SingleItemCategory(item) {
                         onItemClick(it)
                     }

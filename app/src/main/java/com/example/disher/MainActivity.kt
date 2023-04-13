@@ -63,5 +63,6 @@ fun DisherApp() {
             }
             DishesScreen(categoryStr?:"")
         }
+        //TODO final details screen
     }
 }
