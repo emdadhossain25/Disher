@@ -12,22 +12,31 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+sealed class ViewState {
+    object Loading : ViewState()
+    data class Success(val data: List<Category>) : ViewState()
+    data class Error(val errorMessage: String) : ViewState()
+}
+
 @HiltViewModel
 class CategoriesViewModel @Inject constructor(
     useCase: ICategoriesUseCase
 ) : ViewModel() {
-    //    state is a wrapper around data which emits changes to its listeners
 
-    //private one is mutable and receives changes from usecase
-    private val _categoriesList: MutableState<List<Category>> = mutableStateOf(emptyList())
+    private val _viewState: MutableState<ViewState> = mutableStateOf(ViewState.Loading)
 
-    // public one is immutable which is exposed to view (compose)
-    val categoriesList: State<List<Category>> = _categoriesList
+    val viewState: State<ViewState> = _viewState
 
     init {
         viewModelScope.launch {
-            val categoriesResponse = useCase()
-            _categoriesList.value = categoriesResponse.categories
+            try {
+                val categoriesResponse = useCase()
+                _viewState.value = ViewState.Success(categoriesResponse.categories)
+            } catch (e: Exception) {
+                _viewState.value = ViewState.Error(e.message ?: "Unknown Error")
+            }
+
 
         }
     }

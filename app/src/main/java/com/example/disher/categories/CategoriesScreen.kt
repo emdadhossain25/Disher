@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,23 +22,34 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
 import com.example.disher.categories.model.Category
 import com.example.disher.categories.viewmodel.CategoriesViewModel
+import com.example.disher.categories.viewmodel.ViewState
 
 @Composable
 fun CategoriesScreen(
     categoriesViewModel: CategoriesViewModel = hiltViewModel(),
     onItemClick: (String) -> Unit
 ) {
-    //compose screen recompose redraws screen
-    // to survive that and also update new item
-    val listOfCategories by remember { categoriesViewModel.categoriesList }
 
-    LazyColumn {
-        items(listOfCategories) { item ->
-            SingleItemCategory(item){
-                onItemClick(it)
+
+    val viewState by remember { categoriesViewModel.viewState }
+
+    DisposableEffect(key1 = "category") {
+        onDispose { }
+    }
+    when (viewState) {
+        is ViewState.Error -> Text(text = (viewState as ViewState.Error).errorMessage)
+        ViewState.Loading -> Text(text = "Loading")
+        is ViewState.Success -> {
+            LazyColumn {
+                items((viewState as ViewState.Success).data) { item ->
+                    SingleItemCategory(item) {
+                        onItemClick(it)
+                    }
+                }
             }
         }
     }
+
 
 }
 
