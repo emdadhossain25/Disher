@@ -58,10 +58,10 @@ fun DisherApp() {
                 type = NavType.StringType
             })
         ) {
-            val categoryStr = remember {
+            val categoryStr= remember {
                 it.arguments?.getString("category")
             }
-            DishesScreen(categoryStr)
+            DishesScreen(categoryStr?:"")
         }
     }
 }

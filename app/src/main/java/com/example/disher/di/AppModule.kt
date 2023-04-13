@@ -5,6 +5,11 @@ import com.example.disher.categories.repository.ICategoryRepository
 import com.example.disher.categories.service.ICategoriesService
 import com.example.disher.categories.usecase.CategoriesUseCase
 import com.example.disher.categories.usecase.ICategoriesUseCase
+import com.example.disher.dishes.repository.DishesRepository
+import com.example.disher.dishes.repository.IDishesRepository
+import com.example.disher.dishes.service.IDishesCategoryService
+import com.example.disher.dishes.usecase.DishesUsecase
+import com.example.disher.dishes.usecase.IDishesUsecase
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -35,6 +40,12 @@ class AppModule {
         return retrofit.create(ICategoriesService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideDishesCategoryService(retrofit: Retrofit): IDishesCategoryService {
+        return retrofit.create(IDishesCategoryService::class.java)
+    }
+
     //use interface for instance creation
     @Module
     @InstallIn(SingletonComponent::class)
@@ -49,6 +60,12 @@ class AppModule {
         @Singleton
         fun provideCategoryUseCase(categoryUseCase: CategoriesUseCase): ICategoriesUseCase
 
+        @Binds
+        @Singleton
+        fun provideDishesUseCase(dishesUsecase: DishesUsecase): IDishesUsecase
 
+        @Binds
+        @Singleton
+        fun provideDishesRepository(dishesRepository: DishesRepository): IDishesRepository
     }
 }
