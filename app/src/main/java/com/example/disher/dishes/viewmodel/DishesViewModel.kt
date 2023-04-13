@@ -11,16 +11,27 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+sealed class ViewState {
+    object Loading : ViewState()
+    data class Success(val data: List<Meal>) : ViewState()
+    data class Error(val errorMessage: String) : ViewState()
+}
+
 @HiltViewModel
 class DishesViewModel @Inject constructor(
     val usecase: IDishesUsecase
 ) : ViewModel() {
-    private val _getDishesCategoryMealsList: MutableState<List<Meal>> = mutableStateOf(emptyList())
-    val getDishesCategoryMealsList: State<List<Meal>> = _getDishesCategoryMealsList
+    private val _viewState: MutableState<ViewState> = mutableStateOf(ViewState.Loading)
+    val viewState: State<ViewState> = _viewState
     fun getDishesForCategory(catname: String) {
         viewModelScope.launch {
-            val dishesResponse = usecase(catname)
-            _getDishesCategoryMealsList.value = dishesResponse.meals
+            try {
+                val dishesResponse = usecase(catname)
+                _viewState.value = ViewState.Success(dishesResponse.meals)
+            } catch (e: Exception) {
+                _viewState.value = ViewState.Error(e.message ?: "Unknown Error Message")
+            }
 
         }
 

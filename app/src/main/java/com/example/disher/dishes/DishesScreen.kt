@@ -5,23 +5,30 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Text
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.disher.dishes.viewmodel.DishesViewModel
+import com.example.disher.dishes.viewmodel.ViewState
 
 @Composable
 fun DishesScreen(
-    category: String,
+    category: String?,
     viewModel: DishesViewModel = hiltViewModel()
 ) {
-    viewModel.getDishesForCategory(category)
-    val listOfDishes by remember { viewModel.getDishesCategoryMealsList }
-
-    LazyColumn {
-        items(listOfDishes) { item ->
-            Text(item.strMeal)
-
+    DisposableEffect(key1 = "dishes") {
+        if (!category.isNullOrBlank()) {
+            viewModel.getDishesForCategory(category)
         }
+        onDispose { }
     }
+    val viewState by remember { viewModel.viewState }
+
+    when (viewState) {
+        is ViewState.Error -> Text(text = (viewState as ViewState.Error).errorMessage)
+        ViewState.Loading -> Text(text = "Loading")
+        is ViewState.Success -> Text(text = "" + (viewState as ViewState.Success).data)
+    }
+
 }
