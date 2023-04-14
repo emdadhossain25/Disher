@@ -13,10 +13,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.ImagePainter.State.Empty.painter
 import coil.compose.rememberImagePainter
 import com.example.disher.R
 import com.example.disher.details.model.MealDetails
+import com.example.disher.details.model.convertToSmaller
 import com.example.disher.details.viewmodel.DetailsViewModel
 import com.example.disher.details.viewmodel.ViewState
 
@@ -37,14 +37,14 @@ fun DetailsScreen(
         is ViewState.Error -> Text(viewStateValue.error)
         ViewState.Loading -> Text("Loading")
         is ViewState.Success -> {
-            DetailsScreenSuccess(mealDetails = viewStateValue.meal)
+            DetailsScreenSuccess(mealDetails = viewStateValue.meal, viewModel)
         }
     }
 
 }
 
 @Composable
-fun DetailsScreenSuccess(mealDetails: MealDetails) {
+fun DetailsScreenSuccess(mealDetails: MealDetails, viewModel: DetailsViewModel) {
     val uriHandler = LocalUriHandler.current
     Column(
         modifier = Modifier
@@ -57,7 +57,7 @@ fun DetailsScreenSuccess(mealDetails: MealDetails) {
             modifier = Modifier
                 .size(64.dp)
                 .clickable {
-// viewmodel save this item in db
+                    viewModel.saveMealToDb(mealDetails)
                 },
             painter = painterResource(R.drawable.heart),
             contentDescription = null

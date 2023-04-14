@@ -3,9 +3,10 @@ package com.example.disher.db
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.disher.details.model.MealDetails
+import com.example.disher.details.model.SmallerMeal
 
 @Database(
-    entities = [MealDetails::class],
+    entities = [SmallerMeal::class],
     version = 1,
     exportSchema = false
 )

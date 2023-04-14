@@ -4,9 +4,19 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "meal_details")
+data class SmallerMeal(
+    @PrimaryKey
+    val idMeal: String,
+    val title: String
+
+)
+
+fun MealDetails.convertToSmaller(): SmallerMeal {
+    return SmallerMeal(this.idMeal, this.strMeal)
+}
+
 data class MealDetails(
     val dateModified: String,
-    @PrimaryKey
     val idMeal: String,
     val strArea: String,
     val strCategory: String,
