@@ -1,5 +1,5 @@
 package com.example.disher.details.model
 
 data class DetailsResponse(
-    val meals: List<Meal>
+    val meals: List<MealDetails>
 )
