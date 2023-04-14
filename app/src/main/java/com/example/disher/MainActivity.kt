@@ -36,9 +36,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DisherApp() {
-    /**
-     * details composable - Details Screen
-     */
 
     val navController = rememberNavController()
 

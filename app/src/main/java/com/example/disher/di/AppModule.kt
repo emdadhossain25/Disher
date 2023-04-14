@@ -5,6 +5,11 @@ import com.example.disher.categories.repository.ICategoryRepository
 import com.example.disher.categories.service.ICategoriesService
 import com.example.disher.categories.usecase.CategoriesUseCase
 import com.example.disher.categories.usecase.ICategoriesUseCase
+import com.example.disher.details.repository.DetailsRepository
+import com.example.disher.details.repository.IDetailsRepository
+import com.example.disher.details.service.IDetailsService
+import com.example.disher.details.usecase.DetailsUseCase
+import com.example.disher.details.usecase.IDetailsUseCase
 import com.example.disher.dishes.repository.DishesRepository
 import com.example.disher.dishes.repository.IDishesRepository
 import com.example.disher.dishes.service.IDishesCategoryService
@@ -46,6 +51,12 @@ class AppModule {
         return retrofit.create(IDishesCategoryService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideDetailsService(retrofit: Retrofit): IDetailsService {
+        return retrofit.create(IDetailsService::class.java)
+    }
+
     //use interface for instance creation
     @Module
     @InstallIn(SingletonComponent::class)
@@ -67,5 +78,13 @@ class AppModule {
         @Binds
         @Singleton
         fun provideDishesRepository(dishesRepository: DishesRepository): IDishesRepository
+
+        @Binds
+        @Singleton
+        fun provideDetailsUseCase(detailsUseCase: DetailsUseCase): IDetailsUseCase
+
+        @Binds
+        @Singleton
+        fun provideDetailsRepository(detailsRepository: DetailsRepository): IDetailsRepository
     }
 }
