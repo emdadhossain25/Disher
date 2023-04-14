@@ -1,6 +1,7 @@
 package com.example.disher.details
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Button
@@ -8,10 +9,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.ImagePainter.State.Empty.painter
 import coil.compose.rememberImagePainter
+import com.example.disher.R
 import com.example.disher.details.model.MealDetails
 import com.example.disher.details.viewmodel.DetailsViewModel
 import com.example.disher.details.viewmodel.ViewState
@@ -50,6 +54,15 @@ fun DetailsScreenSuccess(mealDetails: MealDetails) {
         Text(mealDetails.strMeal)
         Text(mealDetails.strArea)
         Image(
+            modifier = Modifier
+                .size(64.dp)
+                .clickable {
+// viewmodel save this item in db
+                },
+            painter = painterResource(R.drawable.heart),
+            contentDescription = null
+        )
+        Image(
             modifier = Modifier.size(80.dp),
             painter = rememberImagePainter(mealDetails.strMealThumb),
             contentDescription = null
@@ -83,7 +96,11 @@ fun InstructionTexBlock(modifier: Modifier = Modifier, instruction: String) {
     var showMore by remember {
         mutableStateOf(false)
     }
-    Column(modifier = modifier.padding(16.dp).fillMaxWidth()) {
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
         Box(modifier = Modifier.`if`(!showMore) {
             height(100.dp)
         }) {
