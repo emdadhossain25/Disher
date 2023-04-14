@@ -17,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.disher.categories.CategoriesScreen
+import com.example.disher.details.DetailsScreen
 import com.example.disher.dishes.DishesScreen
 import com.example.disher.ui.theme.DisherTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,13 +36,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun DisherApp() {
-    // TODO
     /**
-     * category composeable-cs
-     * dishes composable -Dishes Screen
+     * details composable - Details Screen
      */
 
     val navController = rememberNavController()
+
     NavHost(
         navController = navController,
         startDestination = "category"
@@ -58,11 +58,22 @@ fun DisherApp() {
                 type = NavType.StringType
             })
         ) {
-            val categoryStr= remember {
+            val categoryStr = remember {
                 it.arguments?.getString("category")
             }
-            DishesScreen(categoryStr?:"")
+            DishesScreen(categoryStr ?: "") { id ->
+                navController.navigate("meal/$id")
+            }
         }
-        //TODO final details screen
+        composable(
+            "meal/{id}",
+            arguments = listOf(navArgument("id") {
+                type = NavType.StringType
+            })
+        ) {
+            val mealId = remember { it.arguments?.getString("id") }
+            DetailsScreen(id = mealId ?: "")
+        }
+
     }
 }

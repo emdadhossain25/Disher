@@ -1,6 +1,7 @@
 package com.example.disher.dishes
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -29,7 +30,8 @@ import com.example.disher.dishes.viewmodel.ViewState
 @Composable
 fun DishesScreen(
     category: String?,
-    viewModel: DishesViewModel = hiltViewModel()
+    viewModel: DishesViewModel = hiltViewModel(),
+    onItemClick: (String) -> Unit
 ) {
     DisposableEffect(key1 = Unit) {
         if (!category.isNullOrBlank()) {
@@ -44,7 +46,9 @@ fun DishesScreen(
         ViewState.Loading -> Text(text = "Loading")
         is ViewState.Success -> LazyColumn {
             items(viewStateValue.data) { item ->
-                SingleItemDishes(item)
+                SingleItemDishes(item) {
+                    onItemClick(it)
+                }
 
             }
         }
@@ -54,11 +58,13 @@ fun DishesScreen(
 
 @Composable
 fun SingleItemDishes(
-    item: Meal
+    item: Meal,
+    onClick: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .padding(8.dp)
+            .clickable { onClick(item.idMeal) }
             .fillMaxWidth(),
         elevation = 8.dp
     ) {
