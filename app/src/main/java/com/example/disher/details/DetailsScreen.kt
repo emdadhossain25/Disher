@@ -18,16 +18,14 @@ fun DetailsScreen(
     val viewState by remember { viewModel.viewState }
     DisposableEffect(key1 = Unit) {
         if (!id.isNullOrBlank()) {
-
             viewModel.getDetails(id)
-
         }
         onDispose { }
     }
     when (val viewStateValue = viewState) {
         is ViewState.Error -> Text(viewStateValue.error)
         ViewState.Loading -> Text("Loading")
-        is ViewState.Success -> Text("${viewStateValue.detailsResponse}")
+        is ViewState.Success -> Text("${viewStateValue.meal}")
     }
 
 }

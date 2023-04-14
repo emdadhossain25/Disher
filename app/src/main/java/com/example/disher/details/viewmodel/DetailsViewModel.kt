@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.disher.details.model.DetailsResponse
+import com.example.disher.details.model.Meal
 import com.example.disher.details.usecase.IDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -13,7 +14,7 @@ import javax.inject.Inject
 
 sealed class ViewState {
     object Loading : ViewState()
-    data class Success(val detailsResponse: DetailsResponse) : ViewState()
+    data class Success(val meal: Meal) : ViewState()
     data class Error(val error: String) : ViewState()
 }
 
@@ -28,7 +29,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val detailsResponse = useCase(id)
-                _viewState.value = ViewState.Success(detailsResponse)
+                _viewState.value = ViewState.Success(detailsResponse.meals[0])
             } catch (e: Exception) {
                 _viewState.value = ViewState.Error("{${e.message}}")
             }
